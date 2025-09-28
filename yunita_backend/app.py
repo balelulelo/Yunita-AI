@@ -1,35 +1,39 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from core_logic import get_yunita_response # We are importing our "brain"
+from core_logic import get_yunita_response, PROMPTS # Import the new PROMPTS dictionary
 
-# 1. Create the Flask App
 app = Flask(__name__)
-
-# 2. Add CORS permission for the website to talk to the server
-# This allows requests from any origin (*).
 CORS(app)
 
-# 3. Define the API endpoint for the chat
-# This creates a URL like your-server.com/chat
 @app.route('/chat', methods=['POST'])
 def chat():
-    # Get the user's message from the incoming request
-    user_message = request.json['message']
+    data = request.json
+    user_message = data.get('message')
+    history = data.get('history', [])
+    language = data.get('language', 'en') # Get language from frontend, default to 'en'
 
-    # Make sure a message was actually sent
     if not user_message:
         return jsonify({"error": "No message provided"}), 400
 
-    # Get Yunita's response by calling our core logic function
-    message, emotion = get_yunita_response(user_message)
-
-    # Package the response in a JSON format and send it back
-    response = {
-        "message": message,
-        "emotion": emotion
+    # Choose the correct initial greeting based on language
+    initial_greeting = {
+        "en": "[neutral] Hmph. You're here. What do you want?",
+        "id": "[neutral] Hmph. Kamu di sini. Mau apa?"
     }
+
+    # Format the history with the correct system prompt for the selected language
+    formatted_history = [
+        {'role': 'user', 'parts': [PROMPTS[language]]},
+        {'role': 'model', 'parts': [initial_greeting[language]]}
+    ]
+    for item in history:
+        role = 'model' if item['sender'] == 'yunita' else 'user'
+        formatted_history.append({'role': role, 'parts': [item['text']]})
+
+    message, emotion = get_yunita_response(user_message, formatted_history, language)
+
+    response = {"message": message, "emotion": emotion}
     return jsonify(response)
 
-# This part is for running the app locally for testing
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8000)
