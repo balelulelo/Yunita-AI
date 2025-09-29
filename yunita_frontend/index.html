@@ -4,23 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with Yunita</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div id="chat-container">
+    <div id="app-container">
 
-        <div id="yunita-display">
+        <div id="yunita-panel">
+            <div class="yunita-background-shape"></div>
             <img id="yunita-image" src="images/neutral.png" alt="Yunita's Portrait">
             <h2>Yunita</h2>
+            <p id="connection-status" class="status-dot online">Online</p>
         </div>
 
-        <div id="chat-log">
-            </div>
-
-        <div id="input-area">
-            <input type="text" id="user-input" placeholder="Say something...">
-            <button id="send-btn">Send</button>
+        <div id="chat-panel">
+            <div id="chat-log">
+                </div>
+            <div id="input-area">
+                <input type="text" id="user-input" placeholder="Say something to Yunita...">
+                <button id="send-btn">➤</button> </div>
         </div>
 
     </div>

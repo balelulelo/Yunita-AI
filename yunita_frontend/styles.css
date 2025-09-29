@@ -1,186 +1,197 @@
-/* General Body Styles */
+/* ---- Import & Global Styles ---- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+:root {
+    --light-blue: #B5E2FF; /* Using your palette, slightly adjusted for better contrast */
+    --dark-blue: #023E8A;
+    --white: #FFFFFF;
+    --dark-grey: #495057;
+    --panel-bg: rgba(255, 255, 255, 0.8);
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, clean font */
+    font-family: 'Nunito', sans-serif; /* Using the fun, rounded font */
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Full viewport height */
-    background-color: #B5E2F; /* Light blue background */
-    overflow: hidden; /* Hide any overflow from bubbly elements */
-    position: relative;
-}
-
-/* Bubbles/Shapes for Playful Theme */
-body::before,
-body::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%; /* Make them circular */
-    opacity: 0.2; /* Soft, subtle effect */
-    background-color: #023E8A; /* Dark blue accent */
-    z-index: -1; /* Keep them behind the main content */
-}
-
-body::before {
-    width: 200px;
-    height: 200px;
-    top: 10%;
-    left: 15%;
-    transform: rotate(20deg);
-}
-
-body::after {
-    width: 150px;
-    height: 150px;
-    bottom: 5%;
-    right: 10%;
-    transform: rotate(-30deg);
-}
-
-/* Main Chat Container */
-#chat-container {
-    background-color: WHITE; /* White main container */
-    border-radius: 20px; /* Bubbly rounded corners */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Soft shadow for modern depth */
-    width: 90%;
-    max-width: 800px; /* Max width for larger screens */
-    height: 90vh; /* Almost full viewport height */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative; /* For floating elements inside */
-}
-
-/* Yunita Display Area (Middle Screen) */
-#yunita-display {
-    flex-grow: 1; /* Takes up available space */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
-    text-align: center;
-    background: linear-gradient(135deg, #B5E2F 30%, #023E8A 100%); /* Gradient for Yunita's background */
-    color: WHITE;
-    border-radius: 20px 20px 0 0; /* Match container top corners */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    box-sizing: border-box;
+}
+
+/* ---- Main Two-Panel Container ---- */
+#app-container {
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
+    display: flex; /* This creates the side-by-side layout! */
+    gap: 20px;
+    background: var(--panel-bg);
+    border-radius: 25px; /* Bubbly corners */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* ---- Left Panel: Yunita's Display ---- */
+#yunita-panel {
+    flex: 0.8; /* Takes up slightly less space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
     position: relative;
     overflow: hidden;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Creative background shape */
+.yunita-background-shape {
+    position: absolute;
+    width: 250%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(2, 62, 138, 0.15) 0%, rgba(181, 226, 255, 0.1) 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulse 10s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 #yunita-image {
-    max-width: 80%; /* Ensure image fits */
-    max-height: 80%;
-    height: auto;
-    object-fit: contain; /* Maintain aspect ratio */
-    border-radius: 15px; /* Slightly rounded image corners */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out; /* Smooth transition for image changes */
+    width: 120%;
+    max-width: 350px;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    animation: float 6s infinite ease-in-out; /* Fun floating animation */
 }
 
-#yunita-image:hover {
-    transform: scale(1.02); /* Slight hover effect */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
 }
 
-#yunita-display h2 {
-    margin-top: 15px;
-    font-size: 1.8em;
-    font-weight: bold;
-    letter-spacing: 1px;
+#yunita-panel h2 {
+    color: var(--dark-blue);
+    font-size: 2.5em;
+    margin: 10px 0 5px 0;
 }
 
-/* Floating Chat Log Box (Bottom) */
-#chat-log {
-    position: absolute; /* Position relative to #chat-container */
-    bottom: 90px; /* Adjust to float above input area */
-    left: 5%;
-    right: 5%;
-    max-height: 50%; /* Don't let it take up too much vertical space */
-    background-color: rgba(255, 255, 255, 0.95); /* Slightly translucent white */
-    border-radius: 15px; /* Bubbly corners */
-    padding: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Scroll if content overflows */
-    z-index: 10; /* Ensure it floats above Yunita's display if overlapping */
+.status-dot.online {
+    color: var(--dark-grey);
+    font-size: 1em;
+    background-color: #70e000; /* Cheerful green dot */
+    padding: 2px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.status-dot.offline {
+    color: var(--white);
+    font-size: 1em;
+    background-color: #d90429; /* Bright red for offline */
+    padding: 2px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+/* ---- Right Panel: Chat Interface ---- */
+#chat-panel {
+    flex: 1.2; /* Takes up slightly more space */
     display: flex;
-    flex-direction: column; /* Stack messages vertically */
-    gap: 10px; /* Space between chat bubbles */
+    flex-direction: column;
+    padding: 20px;
 }
 
-/* Chat Message Styles */
+#chat-log {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* More space between bubbles */
+}
+
+/* Custom scrollbar for anime feel */
+#chat-log::-webkit-scrollbar { width: 8px; }
+#chat-log::-webkit-scrollbar-track { background: transparent; }
+#chat-log::-webkit-scrollbar-thumb { background: rgba(2, 62, 138, 0.3); border-radius: 4px; }
+#chat-log::-webkit-scrollbar-thumb:hover { background: rgba(2, 62, 138, 0.5); }
+
+
 .message {
-    padding: 10px 15px;
+    padding: 12px 18px;
     border-radius: 20px;
-    max-width: 70%;
-    font-size: 0.95em;
-    line-height: 1.4;
+    max-width: 80%;
+    font-size: 1em;
+    line-height: 1.5;
+    animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bubbly pop-in animation */
+}
+
+@keyframes pop-in {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .user-message {
-    background-color: #023E8A; /* Dark blue for user */
-    color: WHITE;
-    align-self: flex-end; /* Align to the right */
-    border-bottom-right-radius: 5px; /* Slight edge for chat bubble effect */
+    background-color: var(--dark-blue);
+    color: var(--white);
+    align-self: flex-end;
+    border-bottom-right-radius: 5px;
 }
 
 .yunita-message {
-    background-color: #B5E2F; /* Light blue for Yunita */
-    color: #023E8A;
-    align-self: flex-start; /* Align to the left */
-    border-bottom-left-radius: 5px; /* Slight edge for chat bubble effect */
+    background-color: var(--white);
+    color: var(--dark-blue);
+    align-self: flex-start;
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* Input Area (Bottom of the container) */
 #input-area {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 15px;
-    background-color: darkgrey; /* Dark grey for input area */
     display: flex;
-    gap: 10px;
-    border-radius: 0 0 20px 20px; /* Match container bottom corners */
+    padding-top: 20px;
+    border-top: 1px solid rgba(2, 62, 138, 0.1);
 }
 
 #user-input {
-    flex-grow: 1; /* Takes up most of the space */
-    padding: 12px 18px;
+    flex-grow: 1;
     border: none;
-    border-radius: 25px; /* Very bubbly input field */
+    background: var(--white);
+    padding: 15px 20px;
+    border-radius: 25px;
     font-size: 1em;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly translucent white input */
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-    color: #023E8A;
+    font-family: 'Nunito', sans-serif;
+    color: var(--dark-grey);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-#user-input::placeholder {
-    color: rgba(2, 62, 138, 0.6); /* Lighter dark blue placeholder */
-}
-
-#user-input:focus {
-    outline: none;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), 0 0 0 2px #B5E2F; /* Highlight on focus */
-}
+#user-input:focus { outline: 2px solid var(--light-blue); }
 
 #send-btn {
-    background-color: #023E8A; /* Dark blue send button */
-    color: WHITE;
+    background-color: var(--dark-blue);
+    color: var(--white);
     border: none;
-    border-radius: 25px; /* Bubbly button */
-    padding: 10px 20px;
-    font-size: 1em;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+    transition: all 0.2s ease;
 }
 
-#send-btn:hover {
-    background-color: #0077B6; /* Slightly lighter blue on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-}
+#send-btn:hover { background-color: #0077B6; transform: scale(1.1); }
 
-#send-btn:active {
-    transform: translateY(0); /* Press effect */
-}

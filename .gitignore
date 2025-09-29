@@ -108,6 +108,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+yunita_train/
 
 # Spyder project settings
 .spyderproject
