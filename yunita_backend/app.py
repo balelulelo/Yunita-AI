@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from core_logic import get_yunita_response, PROMPTS # Import the new PROMPTS dictionary
+from core_logic import get_yunita_response, PROMPTS
 
 app = Flask(__name__)
 CORS(app)
@@ -9,28 +9,23 @@ CORS(app)
 def chat():
     data = request.json
     user_message = data.get('message')
-    history = data.get('history', [])
-    language = data.get('language', 'en') # Get language from frontend, default to 'en'
+    history_from_frontend = data.get('history', []) 
+    language = data.get('language', 'en')
+    user_name = data.get('userName', 'User') # Ambil nama pengguna
 
-    if not user_message:
+    if user_message is None:
         return jsonify({"error": "No message provided"}), 400
 
-    # Choose the correct initial greeting based on language
-    initial_greeting = {
-        "en": "[neutral] Hmph. You're here. What do you want?",
-        "id": "[neutral] Hmph. Kamu di sini. Mau apa?"
-    }
+    # Dapatkan prompt dasar dan tambahkan informasi pengguna
+    system_prompt_template = PROMPTS[language]
+    system_prompt_text = f"Your user's name is {user_name}. {system_prompt_template}"
+    
+    system_prompt = {'role': 'user', 'parts': [system_prompt_text]}
+    
+    full_history = [system_prompt] + history_from_frontend
 
-    # Format the history with the correct system prompt for the selected language
-    formatted_history = [
-        {'role': 'user', 'parts': [PROMPTS[language]]},
-        {'role': 'model', 'parts': [initial_greeting[language]]}
-    ]
-    for item in history:
-        role = 'model' if item['sender'] == 'yunita' else 'user'
-        formatted_history.append({'role': role, 'parts': [item['text']]})
-
-    message, emotion = get_yunita_response(user_message, formatted_history, language)
+    # Panggil core logic dengan riwayat yang sudah diformat
+    message, emotion = get_yunita_response(user_message, full_history, language)
 
     response = {"message": message, "emotion": emotion}
     return jsonify(response)
