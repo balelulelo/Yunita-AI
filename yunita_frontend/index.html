@@ -11,23 +11,40 @@
 </head>
 <body>
 
-    <div id="app-container">
+    <div id="main-menu-overlay">
+        <div id="main-menu">
+            <img src="images/neutral.png" alt="Yunita" class="menu-yunita-avatar">
+            <h1>Yunita AI</h1>
+            <p>Your friendly and shy AI companion.</p>
+            <input type="text" id="name-input" placeholder="Enter your name to begin...">
+            <button id="start-chat-btn">Start New Chat</button>
+        </div>
+    </div>
+    <div id="loading-screen" class="hidden">
+        <div class="loading-text">Warming up heart...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+    </div>
 
+    <div id="app-container" class="hidden">
         <div id="yunita-panel">
             <div class="yunita-background-shape"></div>
             <img id="yunita-image" src="images/neutral.png" alt="Yunita's Portrait">
-            <h2>Yunita</h2>
+            <h2 id="yunita-title">Yunita</h2>
             <p id="connection-status" class="status-dot online">Online</p>
+            <div id="language-switcher">
+                <button id="lang-en" class="lang-btn active">EN</button>
+                <button id="lang-id" class="lang-btn">ID</button>
+            </div>
         </div>
-
         <div id="chat-panel">
-            <div id="chat-log">
-                </div>
+            <div id="chat-log"></div>
             <div id="input-area">
                 <input type="text" id="user-input" placeholder="Say something to Yunita...">
-                <button id="send-btn">➤</button> </div>
+                <button id="send-btn">➤</button>
+            </div>
         </div>
-
     </div>
 
     <script src="app.js"></script>

@@ -4,35 +4,43 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const yunitaImage = document.getElementById('yunita-image');
 const connectionStatus = document.getElementById('connection-status');
-const langEnBtn = document.getElementById('lang-en'); // NEW
-const langIdBtn = document.getElementById('lang-id'); // NEW
+const langEnBtn = document.getElementById('lang-en');
+const langIdBtn = document.getElementById('lang-id');
+const mainMenuOverlay = document.getElementById('main-menu-overlay');
+const nameInput = document.getElementById('name-input');
+const startChatBtn = document.getElementById('start-chat-btn');
+const loadingScreen = document.getElementById('loading-screen');
+const appContainer = document.getElementById('app-container');
 
 const backendUrl = 'http://127.0.0.1:8000/chat';
 
-// --- NEW: State variables for history and language ---
+// --- State variables ---
 let chatHistory = [];
-let currentLanguage = 'en'; // Default to English
+let currentLanguage = 'en';
+let userName = 'User';
 
-// --- 2. The core function to handle sending a message ---
+// --- Core function to send a message ---
 async function sendMessage() {
     const messageText = userInput.value.trim();
-    if (!messageText) return;
-
-    appendMessage('user', messageText);
-    chatHistory.push({ sender: 'user', text: messageText });
+    if (messageText) {
+        appendMessage('user', messageText);
+        chatHistory.push({ "role": "user", "parts": [messageText] });
+    }
 
     userInput.value = '';
     userInput.disabled = true;
     sendBtn.disabled = true;
 
     try {
+        const historyToSend = messageText ? chatHistory.slice(0, -1) : chatHistory;
         const response = await fetch(backendUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 message: messageText,
-                history: chatHistory,
-                language: currentLanguage // NEW: Send the current language
+                history: historyToSend,
+                language: currentLanguage,
+                userName: userName
             }),
         });
 
@@ -41,15 +49,18 @@ async function sendMessage() {
         updateConnectionStatus(true);
         const data = await response.json();
 
-        appendMessage('yunita', data.message);
-        chatHistory.push({ sender: 'yunita', text: data.message });
+        for (const msg of data.messages) {
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 700 + 300));
+            appendMessage('yunita', msg);
+            chatHistory.push({ "role": "model", "parts": [msg] });
+        }
         updateYunitaImage(data.emotion);
 
     } catch (error) {
         console.error("Error fetching from backend:", error);
-        const errorMsg = currentLanguage === 'id' ? "Hmph. Aku kesulitan terhubung..." : "Hmph. I'm having trouble connecting...";
+        const errorMsg = "Oh, sorry, there seems to be a connection issue...";
         appendMessage('yunita', errorMsg);
-        updateYunitaImage('annoyed');
+        updateYunitaImage('concerned');
         updateConnectionStatus(false);
     } finally {
         userInput.disabled = false;
@@ -58,8 +69,7 @@ async function sendMessage() {
     }
 }
 
-// --- Helper functions (appendMessage, updateYunitaImage, updateConnectionStatus) remain the same ---
-
+// --- Helper Functions ---
 function appendMessage(sender, text) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'yunita-message');
@@ -69,7 +79,7 @@ function appendMessage(sender, text) {
 }
 
 function updateYunitaImage(emotion) {
-    const validEmotions = ['neutral', 'annoyed', 'blushing', 'smug', 'concerned'];
+    const validEmotions = ['neutral', 'happy', 'blushing', 'concerned', 'curious'];
     if (validEmotions.includes(emotion)) {
         yunitaImage.src = `images/${emotion}.png`;
     } else {
@@ -89,23 +99,41 @@ function updateConnectionStatus(isOnline) {
     }
 }
 
-
-// --- NEW: Function to handle language change ---
-function setLanguage(lang) {
+// --- Application Flow Functions ---
+function startNewChat(lang) {
     currentLanguage = lang;
+    chatLog.innerHTML = '';
     
-    // Update button styles
     langEnBtn.classList.toggle('active', lang === 'en');
     langIdBtn.classList.toggle('active', lang === 'id');
+    userInput.placeholder = lang === 'id' ? `Katakan sesuatu pada ${userName}...` : `Say something to ${userName}...`;
 
-    // Update UI text
-    userInput.placeholder = lang === 'id' ? "Katakan sesuatu..." : "Say something...";
-
-    // Clear chat and reset history for a new conversation
-    chatLog.innerHTML = '';
-    const initialMessage = lang === 'id' ? "Hmph. Kamu di sini. Mau apa?" : "Hmph. You're here. What do you want?";
+    const initialMessage = lang === 'id' 
+        ? `Halo, ${userName}! Senang bertemu denganmu. Ada yang bisa aku bantu?` 
+        : `Hello, ${userName}! It's so nice to see you. What can I help you with?`;
+        
     appendMessage('yunita', initialMessage);
-    chatHistory = [{ sender: 'yunita', text: initialMessage }];
+    chatHistory = [{ "role": "model", "parts": [initialMessage] }];
+}
+
+function transitionToApp() {
+    mainMenuOverlay.style.opacity = 0;
+    setTimeout(() => {
+        mainMenuOverlay.style.display = 'none';
+        loadingScreen.classList.remove('hidden');
+        
+        setTimeout(() => {
+            loadingScreen.classList.add('fade-out');
+            appContainer.classList.remove('hidden');
+            appContainer.classList.add('visible');
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 800);
+
+            userInput.focus();
+        }, 2500);
+    }, 500);
 }
 
 // --- Event Listeners ---
@@ -114,20 +142,20 @@ userInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') sendMessage();
 });
 
-// NEW: Event listeners for language buttons
-langEnBtn.addEventListener('click', () => setLanguage('en'));
-langIdBtn.addEventListener('click', () => setLanguage('id'));
+langEnBtn.addEventListener('click', () => startNewChat('en'));
+langIdBtn.addEventListener('click', () => startNewChat('id'));
 
+startChatBtn.addEventListener('click', () => {
+    const name = nameInput.value.trim();
+    if (name) {
+        userName = name;
+        startNewChat('en');
+        transitionToApp();
+    } else {
+        alert("Please enter your name!");
+    }
+});
 
 window.onload = () => {
-    // Set the initial state
-    setLanguage('en'); 
-
-    // Check connection status
-    fetch(backendUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: '', language: currentLanguage }),
-    }).then(res => updateConnectionStatus(res.ok))
-      .catch(() => updateConnectionStatus(false));
+    nameInput.focus();
 };

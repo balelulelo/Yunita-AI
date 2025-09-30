@@ -59,11 +59,11 @@ def create_dataset_file():
                     continue
                 f.write(json.dumps(item, ensure_ascii=False) + '\n')
         
-        print(f"✅ Dataset berhasil dibuat di '{output_path}'")
+        print(f"Dataset berhasil dibuat di '{output_path}'")
         print(f"Total contoh percakapan: {len(CONVERSATION_SAMPLES)}")
         
     except Exception as e:
-        print(f"❌ Terjadi kesalahan: {e}")
+        print(f"Terjadi kesalahan: {e}")
 
 if __name__ == "__main__":
     create_dataset_file()
