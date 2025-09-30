@@ -8,13 +8,17 @@ CORS(app)
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.json
-    user_message = data.get('message')
+    user_message = data.get('message', '') # Default ke string kosong jika tidak ada
     history_from_frontend = data.get('history', []) 
     language = data.get('language', 'en')
-    user_name = data.get('userName', 'User') # Ambil nama pengguna
+    user_name = data.get('userName', 'User')
 
-    if user_message is None:
-        return jsonify({"error": "No message provided"}), 400
+    # Jika pesan kosong, beri prompt khusus agar Yunita melanjutkan percakapan
+    if not user_message.strip():
+        if language == 'id':
+            user_message = "..." # Prompt untuk melanjutkan dalam Bahasa Indonesia
+        else:
+            user_message = "..." # Prompt to continue in English
 
     # Dapatkan prompt dasar dan tambahkan informasi pengguna
     system_prompt_template = PROMPTS[language]
@@ -24,10 +28,13 @@ def chat():
     
     full_history = [system_prompt] + history_from_frontend
 
-    # Panggil core logic dengan riwayat yang sudah diformat
+    # ... (di dalam fungsi chat di app.py)
     message, emotion = get_yunita_response(user_message, full_history, language)
 
-    response = {"message": message, "emotion": emotion}
+    # Pisahkan pesan jika ada simbol '||'
+    messages = [m.strip() for m in message.split('||')]
+
+    response = {"messages": messages, "emotion": emotion} # Ubah 'message' menjadi 'messages'
     return jsonify(response)
 
 if __name__ == '__main__':
