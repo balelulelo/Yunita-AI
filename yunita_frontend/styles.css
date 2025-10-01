@@ -19,6 +19,7 @@ body {
     min-height: 100vh;
     background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
     box-sizing: border-box;
+    overflow: hidden; /* Mencegah scrollbar muncul saat animasi */
 }
 
 /* ---- Main Two-Panel Container ---- */
@@ -33,7 +34,14 @@ body {
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     border: 1px solid rgba(255, 255, 255, 0.18);
+    opacity: 0; /* Mulai dengan transparan untuk fade-in */
+    transition: opacity 0.8s ease-in-out;
 }
+
+#app-container.visible {
+    opacity: 1; /* Kelas untuk memicu animasi fade-in */
+}
+
 
 /* ---- Left Panel: Yunita's Display ---- */
 #yunita-panel {
@@ -289,4 +297,99 @@ body {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+/* --- Loading Screen Styles --- */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 199;
+    opacity: 1;
+    transition: opacity 0.8s ease-in-out;
+}
+
+#loading-screen.hidden {
+    display: none;
+}
+
+#loading-screen.fade-out {
+    opacity: 0;
+}
+
+.loading-text {
+    color: var(--dark-blue);
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    animation: breathing 2s infinite ease-in-out;
+}
+
+@keyframes breathing {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.loading-bar-container {
+    width: 70%;
+    max-width: 400px;
+    height: 15px; /* Bar lebih besar */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.loading-bar {
+    width: 0;
+    height: 100%;
+    background-color: var(--dark-blue);
+    border-radius: 10px;
+    animation: load 2s ease-out forwards;
+}
+
+@keyframes load {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Language Switcher Styles */
+#language-switcher {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+.lang-btn {
+    border: 2px solid transparent;
+    background-color: transparent;
+    color: var(--dark-blue);
+    padding: 8px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lang-btn:hover {
+    background-color: rgba(2, 62, 138, 0.1);
+}
+
+.lang-btn.active {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    border-color: var(--dark-blue);
 }

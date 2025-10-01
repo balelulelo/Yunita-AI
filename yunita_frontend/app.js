@@ -117,23 +117,34 @@ function startNewChat(lang) {
 }
 
 function transitionToApp() {
+    // 1. Mulai transisi fade-out untuk menu utama
     mainMenuOverlay.style.opacity = 0;
+    
+    // 2. Setelah transisi menu selesai, tampilkan layar loading
     setTimeout(() => {
         mainMenuOverlay.style.display = 'none';
         loadingScreen.classList.remove('hidden');
         
+        // 3. Tunggu animasi loading selesai (misal, 2.5 detik)
         setTimeout(() => {
+            // 4. Mulai transisi fade-out untuk layar loading
             loadingScreen.classList.add('fade-out');
-            appContainer.classList.remove('hidden');
-            appContainer.classList.add('visible');
             
+            // 5. Tampilkan container aplikasi utama dan mulai transisi fade-in
+            appContainer.classList.remove('hidden');
+            // Sedikit delay untuk memastikan transisi dimulai setelah .hidden dihilangkan
+            setTimeout(() => {
+                appContainer.classList.add('visible');
+            }, 50);
+
+            // 6. Setelah transisi loading selesai, sembunyikan elemennya agar tidak mengganggu
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-            }, 800);
+                userInput.focus(); // Fokus ke input setelah semua transisi selesai
+            }, 800); // Harus cocok dengan durasi transisi di CSS (0.8s)
 
-            userInput.focus();
-        }, 2500);
-    }, 500);
+        }, 2500); // Durasi layar loading ditampilkan
+    }, 500); // Harus cocok dengan durasi transisi menu di CSS (0.5s)
 }
 
 // --- Event Listeners ---
@@ -149,13 +160,17 @@ startChatBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
     if (name) {
         userName = name;
-        startNewChat('en');
+        startNewChat('en'); // Default ke English saat pertama mulai
         transitionToApp();
     } else {
         alert("Please enter your name!");
     }
 });
 
+// --- Initial Setup ---
 window.onload = () => {
+    // Sembunyikan elemen yang tidak seharusnya terlihat di awal
+    appContainer.classList.add('hidden');
+    loadingScreen.classList.add('hidden');
     nameInput.focus();
 };
