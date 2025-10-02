@@ -18,6 +18,46 @@ const backendUrl = 'http://127.0.0.1:8000/chat';
 let chatHistory = [];
 let currentLanguage = 'en';
 let userName = 'User';
+let isAudioPlaying = false; // Mencegah audio tumpang tindih
+
+// Ganti fungsi playAudioResponse yang lama dengan yang ini
+async function playAudioResponse(text) {
+    if (isAudioPlaying) return;
+
+    // URL endpoint baru di backend Anda
+    const backendTtsUrl = 'http://127.0.0.1:8000/generate-audio';
+
+    try {
+        isAudioPlaying = true;
+        const response = await fetch(backendTtsUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text: text, // Kirim teks ke backend Anda
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Backend TTS error! status: ${response.status}`);
+        }
+
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+
+        audio.onended = () => {
+            isAudioPlaying = false;
+        };
+
+    } catch (error) {
+        console.error("Could not play TTS audio via backend:", error);
+        isAudioPlaying = false;
+    }
+}
+
 
 // --- Core function to send a message ---
 async function sendMessage() {
@@ -48,19 +88,28 @@ async function sendMessage() {
         
         updateConnectionStatus(true);
         const data = await response.json();
-
+        
+        let fullMessageToRead = "";
         for (const msg of data.messages) {
             await new Promise(resolve => setTimeout(resolve, Math.random() * 700 + 300));
             appendMessage('yunita', msg);
             chatHistory.push({ "role": "model", "parts": [msg] });
+            fullMessageToRead += msg + " "; // Gabungkan pesan untuk dibacakan
         }
+        
+        // --- PANGGIL FUNGSI TTS DI SINI ---
+        if (fullMessageToRead.trim()) {
+            playAudioResponse(fullMessageToRead.trim());
+        }
+        // ---------------------------------
+
         updateYunitaImage(data.emotion);
 
     } catch (error) {
         console.error("Error fetching from backend:", error);
         const errorMsg = "Oh, sorry, there seems to be a connection issue...";
         appendMessage('yunita', errorMsg);
-        updateYunitaImage('curious');
+        updateYunitaImage('concerned');
         updateConnectionStatus(false);
     } finally {
         userInput.disabled = false;
@@ -106,7 +155,7 @@ function startNewChat(lang) {
     
     langEnBtn.classList.toggle('active', lang === 'en');
     langIdBtn.classList.toggle('active', lang === 'id');
-    userInput.placeholder = lang === 'id' ? `Ayo mulai ngobrol sama Yunita...` : `Say something to Yunita...`;
+    userInput.placeholder = lang === 'id' ? `Katakan sesuatu pada Yunita...` : `Say something to Yunita...`;
 
     const initialMessage = lang === 'id' 
         ? `Halo, ${userName}! Senang bertemu denganmu. Ada yang bisa aku bantu?` 
@@ -114,37 +163,29 @@ function startNewChat(lang) {
         
     appendMessage('yunita', initialMessage);
     chatHistory = [{ "role": "model", "parts": [initialMessage] }];
+
+    // Putar suara sapaan awal
+    playAudioResponse(initialMessage);
 }
 
 function transitionToApp() {
-    // 1. Mulai transisi fade-out untuk menu utama
     mainMenuOverlay.style.opacity = 0;
-    
-    // 2. Setelah transisi menu selesai, tampilkan layar loading
     setTimeout(() => {
         mainMenuOverlay.style.display = 'none';
         loadingScreen.classList.remove('hidden');
         
-        // 3. Tunggu animasi loading selesai (misal, 2.5 detik)
         setTimeout(() => {
-            // 4. Mulai transisi fade-out untuk layar loading
             loadingScreen.classList.add('fade-out');
-            
-            // 5. Tampilkan container aplikasi utama dan mulai transisi fade-in
             appContainer.classList.remove('hidden');
-            // Sedikit delay untuk memastikan transisi dimulai setelah .hidden dihilangkan
-            setTimeout(() => {
-                appContainer.classList.add('visible');
-            }, 50);
-
-            // 6. Setelah transisi loading selesai, sembunyikan elemennya agar tidak mengganggu
+            appContainer.classList.add('visible');
+            
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                userInput.focus(); // Fokus ke input setelah semua transisi selesai
-            }, 800); // Harus cocok dengan durasi transisi di CSS (0.8s)
+            }, 800);
 
-        }, 2500); // Durasi layar loading ditampilkan
-    }, 500); // Harus cocok dengan durasi transisi menu di CSS (0.5s)
+            userInput.focus();
+        }, 2500);
+    }, 500);
 }
 
 // --- Event Listeners ---
@@ -160,17 +201,13 @@ startChatBtn.addEventListener('click', () => {
     const name = nameInput.value.trim();
     if (name) {
         userName = name;
-        startNewChat('en'); // Default ke English saat pertama mulai
+        startNewChat('en');
         transitionToApp();
     } else {
         alert("Please enter your name!");
     }
 });
 
-// --- Initial Setup ---
 window.onload = () => {
-    // Sembunyikan elemen yang tidak seharusnya terlihat di awal
-    appContainer.classList.add('hidden');
-    loadingScreen.classList.add('hidden');
     nameInput.focus();
 };
