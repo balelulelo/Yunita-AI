@@ -60,7 +60,7 @@ async function sendMessage() {
         console.error("Error fetching from backend:", error);
         const errorMsg = "Oh, sorry, there seems to be a connection issue...";
         appendMessage('yunita', errorMsg);
-        updateYunitaImage('concerned');
+        updateYunitaImage('curious');
         updateConnectionStatus(false);
     } finally {
         userInput.disabled = false;
@@ -106,7 +106,7 @@ function startNewChat(lang) {
     
     langEnBtn.classList.toggle('active', lang === 'en');
     langIdBtn.classList.toggle('active', lang === 'id');
-    userInput.placeholder = lang === 'id' ? `Katakan sesuatu pada ${userName}...` : `Say something to ${userName}...`;
+    userInput.placeholder = lang === 'id' ? `Ayo mulai ngobrol sama Yunita...` : `Say something to Yunita...`;
 
     const initialMessage = lang === 'id' 
         ? `Halo, ${userName}! Senang bertemu denganmu. Ada yang bisa aku bantu?` 
