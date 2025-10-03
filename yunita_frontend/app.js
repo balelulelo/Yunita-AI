@@ -58,11 +58,17 @@ async function sendMessage() {
 
     } catch (error) {
         console.error("Error fetching from backend:", error);
-        const errorMsg = "Oh, sorry, there seems to be a connection issue...";
+        
+        // Gunakan ternary operator untuk menentukan pesan error berdasarkan 'currentLanguage'
+        const errorMsg = currentLanguage === 'id' 
+            ? "Aduh, maaf, sepertinya ada masalah koneksi..." 
+            : "Oh, sorry, there seems to be a connection issue...";
+        
         appendMessage('yunita', errorMsg);
-        updateYunitaImage('curious');
+        // Nanti kalo dah ada fotonya, gw ganti jd concerned
+        updateYunitaImage('curious'); 
         updateConnectionStatus(false);
-    } finally {
+    }finally {
         userInput.disabled = false;
         sendBtn.disabled = false;
         userInput.focus();
