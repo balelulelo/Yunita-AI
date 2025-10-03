@@ -361,7 +361,18 @@ body {
 }
 
 /* Language Switcher Styles */
+
 #language-switcher {
+    position: absolute;
+    bottom: 20px; /* Posisi di paling bawah panel */
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+/* #language-switcher {
     position: absolute;
     bottom: 20px;
     display: flex;
@@ -369,7 +380,7 @@ body {
     background-color: rgba(255, 255, 255, 0.7);
     padding: 5px;
     border-radius: 25px;
-}
+} */
 
 .lang-btn {
     border: 2px solid transparent;
@@ -394,3 +405,44 @@ body {
     border-color: var(--dark-blue);
 }
 
+/* Kontainer untuk Tombol TTS */
+#tts-switch-container {
+    position: absolute;
+    bottom: 85px; /* Posisikan di atas language switcher */
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+/* Penataan Tombol Suara (meniru .lang-btn) */
+.voice-btn {
+    border: 2px solid transparent;
+    background-color: transparent;
+    color: var(--dark-blue);
+    padding: 8px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voice-btn:hover {
+    background-color: rgba(2, 62, 138, 0.1);
+}
+
+.voice-btn.active {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    border-color: var(--dark-blue);
+}
+
+
+/* Penyesuaian Posisi Language Switcher */
+#language-switcher {
+    position: absolute;
+    bottom: 20px;
+}
