@@ -13,11 +13,13 @@
 
     <div id="main-menu-overlay">
         <div id="main-menu">
-            <img src="images/image7.jpeg" alt="Yunita" class="menu-yunita-avatar">
-            <h1>Yunita AI</h1>
+            <img src="images/titleimage.png" alt="Title" class="main-menu-title-image">
             <p>Your friendly and shy AI companion.</p>
-            <input type="text" id="name-input" placeholder="Enter your name to begin...">
-            <button id="start-chat-btn">Start New Chat</button>
+
+            <div class="input-card">
+                <input type="text" id="name-input" placeholder="Enter your name to begin...">
+                <button id="start-chat-btn">Start New Chat</button>
+            </div>
         </div>
     </div>
     <div id="loading-screen" class="hidden">
@@ -33,13 +35,6 @@
             <img id="yunita-image" src="images/neutral.png" alt="Yunita's Portrait">
             <h2 id="yunita-title">Yunita</h2>
             <p id="connection-status" class="status-dot online">Online</p>
-               
-            <!-- <div class="tts-switch-container">
-                <input type="checkbox" id="tts-toggle" class="tts-toggle-checkbox">
-                <label for="tts-toggle" class="tts-toggle-label">
-                    <span class="tts-label-text">Voice Off</span>
-                </label>
-            </div> -->
 
             <div id="tts-switch-container">
                 <button id="voice-off" class="voice-btn active">Voice OFF</button>

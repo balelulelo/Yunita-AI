@@ -123,6 +123,8 @@ function startNewChat(lang) {
 }
 
 function transitionToApp() {
+
+    document.body.classList.add('in-chat');
     // 1. Mulai transisi fade-out untuk menu utama
     mainMenuOverlay.style.opacity = 0;
     
