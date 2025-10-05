@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
 :root {
-    --light-blue: #B5E2FF;
+    --light-blue: rgba(181, 226, 255, 1);
     --dark-blue: #023E8A;
     --white: #FFFFFF;
     --dark-grey: #495057;
@@ -17,9 +17,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(181, 226, 255, 1);
     background-image: url('images/background.png'); 
-    background-size: 1450px; 
+    background-size: 1300px; 
     background-position: center; 
     background-repeat: no-repeat; 
 
@@ -286,7 +286,7 @@ body.in-chat {
 }
 
 .input-card {
-    background: var(--white);
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
     border-radius: 25px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
@@ -338,7 +338,14 @@ body.in-chat {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    /* background: linear-gradient(45deg, var(--light-blue), #c2e9fb); */
+/* 
+    background: rgba(181, 226, 255, 1); */
+    background-image: url('images/yunita_icon.png'); 
+    background-size: 300px; 
+    background-position: 1350px 600px; 
+    background-repeat: no-repeat;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
