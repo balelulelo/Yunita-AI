@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
 :root {
-    --light-blue: #B5E2FF; /* Using your palette, slightly adjusted for better contrast */
+    --light-blue: #B5E2FF;
     --dark-blue: #023E8A;
     --white: #FFFFFF;
     --dark-grey: #495057;
@@ -10,22 +10,21 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif; /* Using the fun, rounded font */
+    font-family: 'Nunito', sans-serif; 
     margin: 0;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* background: #FFFFFF; */
-
-    background-image: url('images/YunitaMita.png'); /* Ganti dengan nama file Anda */
-    background-size: cover; /* Agar gambar menutupi seluruh layar */
-    background-position: center; /* Agar gambar berada di tengah */
-    background-repeat: no-repeat; /* Agar gambar tidak berulang */
+    background: rgba(255, 255, 255, 0.5);
+    background-image: url('images/background.png'); 
+    background-size: 1450px; 
+    background-position: center; 
+    background-repeat: no-repeat; 
 
     box-sizing: border-box;
-    overflow: hidden; /* Mencegah scrollbar muncul saat animasi */
+    overflow: hidden;
 }
 
 body.in-chat {
@@ -220,7 +219,7 @@ body.in-chat {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    background: transparent;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -231,7 +230,7 @@ body.in-chat {
 }
 
 #main-menu {
-    background: var(--light-blue), 0.8;
+    background-color: rgba(170, 218, 255, 0.7);
     padding: 280px 50px;
     border-radius: 25px;
     text-align: center;
@@ -246,7 +245,7 @@ body.in-chat {
     justify-content: flex-start;
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1.5em;
     padding-top: 70px;
 } 
 

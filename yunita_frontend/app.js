@@ -171,7 +171,7 @@ startChatBtn.addEventListener('click', () => {
         startNewChat('en'); // Default ke English saat pertama mulai
         transitionToApp();
     } else {
-        alert("Please enter your name!");
+        alert("Mana Nama Kau lah Vro ?");
     }
 });
 
