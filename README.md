@@ -1,6 +1,7 @@
 # YUNITA AI
 
-<img width="1440" height="1024" alt="YunitaPoster" src="https://github.com/user-attachments/assets/b4c92522-796a-4b25-a879-3f3fc19b9600" />
+<img width="1440" height="1024" alt="poster" src="https://github.com/user-attachments/assets/6a9eeb58-1698-4615-a7e2-4f4bd0e7a5be" />
+
 
 Meet Yunita! your friendly AI Chat partner.
 
@@ -8,12 +9,12 @@ This repository is about an interactive AI Chatbot with a kind and friendly pers
 
 ## Tech Stack:
 
-### Frontend:
+### A. Frontend:
 1. HTML5
 2. CSS3
 3. Javascript
 
-### Backend:
+### B. Backend:
 1. Python
 2. Flask
 3. Google Generative AI 
