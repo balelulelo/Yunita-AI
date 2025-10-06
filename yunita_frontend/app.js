@@ -58,11 +58,17 @@ async function sendMessage() {
 
     } catch (error) {
         console.error("Error fetching from backend:", error);
-        const errorMsg = "Oh, sorry, there seems to be a connection issue...";
+        
+        // Gunakan ternary operator untuk menentukan pesan error berdasarkan 'currentLanguage'
+        const errorMsg = currentLanguage === 'id' 
+            ? "Aduh, maaf, sepertinya ada masalah koneksi..." 
+            : "Oh, sorry, there seems to be a connection issue...";
+        
         appendMessage('yunita', errorMsg);
-        updateYunitaImage('concerned');
+        // Nanti kalo dah ada fotonya, gw ganti jd concerned
+        updateYunitaImage('curious'); 
         updateConnectionStatus(false);
-    } finally {
+    }finally {
         userInput.disabled = false;
         sendBtn.disabled = false;
         userInput.focus();
@@ -106,7 +112,7 @@ function startNewChat(lang) {
     
     langEnBtn.classList.toggle('active', lang === 'en');
     langIdBtn.classList.toggle('active', lang === 'id');
-    userInput.placeholder = lang === 'id' ? `Katakan sesuatu pada ${userName}...` : `Say something to ${userName}...`;
+    userInput.placeholder = lang === 'id' ? `Ayo mulai ngobrol sama Yunita...` : `Say something to Yunita...`;
 
     const initialMessage = lang === 'id' 
         ? `Halo, ${userName}! Senang bertemu denganmu. Ada yang bisa aku bantu?` 
@@ -117,6 +123,8 @@ function startNewChat(lang) {
 }
 
 function transitionToApp() {
+
+    document.body.classList.add('in-chat');
     // 1. Mulai transisi fade-out untuk menu utama
     mainMenuOverlay.style.opacity = 0;
     
@@ -163,7 +171,7 @@ startChatBtn.addEventListener('click', () => {
         startNewChat('en'); // Default ke English saat pertama mulai
         transitionToApp();
     } else {
-        alert("Please enter your name!");
+        alert("Mana Nama Kau lah Vro ?");
     }
 });
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with Yunita</title>
+    <link rel="icon" type="image/png" href="images/yunita_icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
@@ -13,16 +14,18 @@
 
     <div id="main-menu-overlay">
         <div id="main-menu">
-            <img src="images/neutral.png" alt="Yunita" class="menu-yunita-avatar">
-            <h1>Yunita AI</h1>
-            <p>Your friendly and shy AI companion.</p>
-            <input type="text" id="name-input" placeholder="Enter your name to begin...">
-            <button id="start-chat-btn">Start New Chat</button>
+            <img src="images/titleimage.png" alt="Title" class="main-menu-title-image">
+            <p>Your Friendly AI Companion</p>
+
+            <div class="input-card">
+                <input type="text" id="name-input" placeholder="Enter your name to begin...">
+                <button id="start-chat-btn">Start New Chat</button>
+            </div>
         </div>
     </div>
     <div id="loading-screen" class="hidden">
         <div class="loading-text">Yunita is Getting Ready...</div>
-        <div class="loading-bar-container">
+        <div class="loading-bar-container"> 
             <div class="loading-bar"></div>
         </div>
     </div>
@@ -33,6 +36,12 @@
             <img id="yunita-image" src="images/neutral.png" alt="Yunita's Portrait">
             <h2 id="yunita-title">Yunita</h2>
             <p id="connection-status" class="status-dot online">Online</p>
+
+            <div id="tts-switch-container">
+                <button id="voice-off" class="voice-btn active">Voice OFF</button>
+                <button id="voice-on" class="voice-btn">Voice ON</button>
+            </div>
+            
             <div id="language-switcher">
                 <button id="lang-en" class="lang-btn active">EN</button>
                 <button id="lang-id" class="lang-btn">ID</button>

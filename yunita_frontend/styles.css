@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 
 :root {
-    --light-blue: #B5E2FF; /* Using your palette, slightly adjusted for better contrast */
+    --light-blue: rgba(181, 226, 255, 1);
     --dark-blue: #023E8A;
     --white: #FFFFFF;
     --dark-grey: #495057;
@@ -10,16 +10,25 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif; /* Using the fun, rounded font */
+    font-family: 'Nunito', sans-serif; 
     margin: 0;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    background: rgba(181, 226, 255, 1);
+    background-image: url('images/background.png'); 
+    background-size: 1300px; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+
     box-sizing: border-box;
-    overflow: hidden; /* Mencegah scrollbar muncul saat animasi */
+    overflow: hidden;
+}
+
+body.in-chat {
+    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
 }
 
 /* ---- Main Two-Panel Container ---- */
@@ -210,18 +219,19 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    background: transparent;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    padding-right: 10%;
     z-index: 200;
     opacity: 1;
     transition: opacity 0.5s ease;
 }
 
 #main-menu {
-    background: var(--panel-bg);
-    padding: 40px 50px;
+    background-color: rgba(170, 218, 255, 0.7);
+    padding: 280px 50px;
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -231,27 +241,37 @@ body {
     max-width: 400px;
     transform: scale(0.9);
     animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
+    margin-right: 70px;
+    justify-content: flex-start;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1.5em;
+    padding-top: 70px;
+} 
 
-.menu-yunita-avatar {
+/* .menu-yunita-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     border: 3px solid var(--white);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
-}
+} */
 
-#main-menu h1 {
-    color: var(--dark-blue);
-    margin: 10px 0 5px 0;
-    font-size: 2.5em;
+.main-menu-title-image {
+    max-width: 400px; /* Atur lebar maksimal gambar judul */
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 #main-menu p {
-    color: var(--dark-grey);
+    color: var(--white);
+    background-color: var(--dark-blue);
+    padding: 10px 20px;
+    border-radius: 20px;
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 
 #name-input {
@@ -265,7 +285,19 @@ body {
     font-size: 1em;
 }
 
-#start-chat-btn, #load-chat-btn {
+.input-card {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Jarak antara input dan tombol */
+}
+
+#start-chat-btn {
     width: 100%;
     background-color: var(--dark-blue);
     color: var(--white);
@@ -306,7 +338,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, var(--light-blue), #c2e9fb);
+    /* background: linear-gradient(45deg, var(--light-blue), #c2e9fb); */
+/* 
+    background: rgba(181, 226, 255, 1); */
+    background-image: url('images/faiz.jpeg'); 
+    background-size: 300px; 
+    background-position: 1350px 600px; 
+    background-repeat: no-repeat;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -361,7 +400,18 @@ body {
 }
 
 /* Language Switcher Styles */
+
 #language-switcher {
+    position: absolute;
+    bottom: 20px; /* Posisi di paling bawah panel */
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+/* #language-switcher {
     position: absolute;
     bottom: 20px;
     display: flex;
@@ -369,7 +419,7 @@ body {
     background-color: rgba(255, 255, 255, 0.7);
     padding: 5px;
     border-radius: 25px;
-}
+} */
 
 .lang-btn {
     border: 2px solid transparent;
@@ -392,4 +442,46 @@ body {
     background-color: var(--dark-blue);
     color: var(--white);
     border-color: var(--dark-blue);
+}
+
+/* Kontainer untuk Tombol TTS */
+#tts-switch-container {
+    position: absolute;
+    bottom: 85px; /* Posisikan di atas language switcher */
+    display: flex;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+/* Penataan Tombol Suara (meniru .lang-btn) */
+.voice-btn {
+    border: 2px solid transparent;
+    background-color: transparent;
+    color: var(--dark-blue);
+    padding: 8px 18px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.voice-btn:hover {
+    background-color: rgba(2, 62, 138, 0.1);
+}
+
+.voice-btn.active {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    border-color: var(--dark-blue);
+}
+
+
+/* Penyesuaian Posisi Language Switcher */
+#language-switcher {
+    position: absolute;
+    bottom: 20px;
 }
